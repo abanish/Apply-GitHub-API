@@ -1,0 +1,58 @@
+doctype
+html( lang="en" )
+    head
+        title FetchIssuesCount
+        meta( charset='utf-8' )
+        meta( http-equiv='X-UA-Compatible', content='IE=edge' )
+        meta( name='viewport', content='width=device-width, initial-scale=1.0' )
+        meta( name='description', content='Baking Bootstrap Snippets with Jade' )
+        link( href="css/site.css", rel="stylesheet" )
+        link( href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet" )
+
+    body( ng-app='app' ng-controller='fetchIssuesController' )
+      .container
+        .row
+          .col-md-6.col-md-offset-4
+            h2 Github Issues Count
+          .col-md-6.col-md-offset-3
+            #custom-search-input
+              form(ng-submit='fetch(searchLink)', name='searchIssues')
+                .input-group.col-md-12
+                  input.form-control.input-lg(type='url',name='url', ng-keypress='open_issues=null; error=null; loaded=true' required='', ng-model='searchLink', ng-submit='fetch(searchLink)', placeholder='https://github.com/{org_name or username}/{repo_name}')
+                  span.input-group-btn
+                    button.btn.btn-info.btn-lg(type='submit')
+                      i.glyphicon.glyphicon-search
+        br
+        .row(ng-show='loaded != true')
+          .col-md-6.col-md-offset-5.custyle
+            img(src="media/giphy.gif" ng-show='!loaded && !error')
+        .row(ng-show='error')
+          .col-md-6.col-md-offset-3.custyle
+            small.text-danger Please enter a correct github url in the format https://github.com/{org_name or username}/{repo_name}
+        br
+        .row(ng-show='open_issues != null')
+          .col-md-6.col-md-offset-3.custyle
+            table.table.table-striped.custab
+              thead
+                tr
+                  th ID
+                  th Timespan
+                  th Count
+                tr
+                  td 1
+                  td Total number of open issues
+                  td {{open_issues}}
+                tr
+                  td 2
+                  td Number of open issues that were open in last 24 hours
+                  td {{lastoneday}}
+                tr
+                  td 3
+                  td Number of open issues that were opened more than 24 hours ago but less than 7 days
+                  td {{lastoneweek}}
+
+
+          script( src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
+          script( src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' )
+          script( src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js' )
+          script( src='/app/app.js' )
