@@ -15,6 +15,11 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
 
   //fetch function evoked when a github link is submitted. It gets count of issues from github using GITHUB API.
   $scope.fetch = function (searchLink){
+    //var regex='(^https:\/\/(www\.)?github\.com\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*))'
+    var regex = /^(https):\/\/(github\.com)[^ "]+$/;
+    var gitLink = searchLink.split("/");
+    if(searchLink.match(regex) && gitLink[3] != null && gitLink[4] != null){
+
     $scope.loaded = false;
     //seperating the searched link using javascript split() function on "/" to get {org_name or username} and {repo_name}
     var gitLink = searchLink.split("/");
@@ -25,7 +30,12 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       $scope.open_issues=total_open_issues;
     }).error(function(err){
       console.log(err);
-      $scope.error=err;
+      if(err.message="Not Found"){
+        $scope.error = "The repository is not present! https://github.com/{org_name or username}/{repo_name}"
+      }
+      else{
+        $scope.error = "Something went wrong. Please try again later!"
+      }
     })
 
     //three variables to hold three timestamps, todays, 24 hours ago and seven days ago
@@ -44,7 +54,12 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       $scope.lastoneday=lastoneday;
     }).error(function(err){
       console.log(err);
-      $scope.error=err;
+      if(err.message="Not Found"){
+        $scope.error = "The repository is not present! https://github.com/{org_name or username}/{repo_name}"
+      }
+      else{
+        $scope.error = "Something went wrong. Please try again later!"
+      }
 
     })
 
@@ -58,8 +73,17 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       $scope.loaded=true;
     }).error(function(err){
       console.log(err);
-      $scope.error=err;
+      if(err.message="Not Found"){
+        $scope.error = "The repository is not present! Please provide repo url in format https://github.com/{org_name or username}/{repo_name} "
+      }
+      else{
+        $scope.error = "Something went wrong. Please try again later!"
+      }
     })
   }
+  else{
+    $scope.error="please enter the url in the format https://github.com/{org_name or username}/{repo_name}";
+  }
+}
 }
 ]);
