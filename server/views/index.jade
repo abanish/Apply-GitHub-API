@@ -1,11 +1,16 @@
+//-
+    Single page application with Angular/Node/Express to display number of all open Github issues,
+    issues which were opened in last 24 hours and issues opened more than 24 hours ago and less than 7 days.
+
 doctype
 html( lang="en" )
     head
-        title FetchIssuesCount
+        title Github Issues Count
         meta( charset='utf-8' )
         meta( http-equiv='X-UA-Compatible', content='IE=edge' )
         meta( name='viewport', content='width=device-width, initial-scale=1.0' )
-        meta( name='description', content='Baking Bootstrap Snippets with Jade' )
+        meta( name='description', content='Github Issues Count using github url' )
+        meta( name='author', content='Abanish Chaudhary')
         link( href="css/site.css", rel="stylesheet" )
         link( href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet" )
         script( src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
@@ -19,20 +24,30 @@ html( lang="en" )
             h2 Github Issues Count
           .col-md-6.col-md-offset-3
             #custom-search-input
+              //-
+                  display loading gif until the table with number of issues
+                  gets loaded with data retrieved from API call
               form(ng-submit='fetch(searchLink)', name='searchIssues')
                 .input-group.col-md-12
-                  input.form-control.input-lg(type='url',name='url', ng-keypress='open_issues=null; error=null; loaded=true', required='', ng-model='searchLink', ng-submit='fetch(searchLink)',  placeholder='https://github.com/{org_name or username}/{repo_name}')
+                  input.form-control.input-lg(type='url',name='url', ng-keypress='open_issues=null; error=null; loaded=true', required='', ng-model='searchLink', ng-submit='fetch(searchLink)',  placeholder='Enter Github repo link here')
                   span.input-group-btn
                     button.btn.btn-info.btn-lg(type='submit')
                       i.glyphicon.glyphicon-search
         br
+        //
+            display error message if error occurs or something goes wrong.
         .row(ng-show='error != null')
           .col-md-6.col-md-offset-3.custyle
             small.text-danger {{error}}
+        //
+            display loading gif until the table with number of issues
+            gets loaded with data recieved from API call.
         .row(ng-show='loaded != true')
           .col-md-6.col-md-offset-5.custyle
             img(src="media/giphy.gif" ng-show='!loaded && !error')
         br
+        //
+            display table after git url is submitted, verified and API call is successful.
         .row(ng-show='open_issues != null')
           .col-md-6.col-md-offset-3.custyle
             table.table.table-striped.custab
@@ -52,4 +67,4 @@ html( lang="en" )
                 tr
                   td 3
                   td Number of open issues that were opened more than 24 hours ago but less than 7 days
-                  td {{lastoneweek}}
+                  td {{last7daysminuslast1day}}

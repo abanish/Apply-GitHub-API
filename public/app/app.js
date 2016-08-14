@@ -10,19 +10,20 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
   $scope.total_open_issues_lastoneweek = [];
   $scope.lastoneday = null;
   $scope.lastoneweek = null;
+  $scope.last7daysminuslast1day = null;
   $scope.error = null;
   $scope.loaded = true;
 
-  //fetch function evoked when a github link is submitted. It gets count of issues from github using GITHUB API.
+  //fetch function evoked when a github link is submitted.
+  //It gets count of issues from github using GITHUB API.
   $scope.fetch = function (searchLink){
-    //var regex='(^https:\/\/(www\.)?github\.com\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*))'
+    //validate the input url with regular expression with Github url type.
     var regex = /^(https):\/\/(github\.com)[^ "]+$/;
+    //seperate the searched link using javascript split() function on "/" to get {org_name or username} and {repo_name}
     var gitLink = searchLink.split("/");
     if(searchLink.match(regex) && gitLink[3] != null && gitLink[4] != null){
-
+    //set loaded as false until, for all api call, JSON is returned
     $scope.loaded = false;
-    //seperating the searched link using javascript split() function on "/" to get {org_name or username} and {repo_name}
-    var gitLink = searchLink.split("/");
 
     //gitLink[3] is the org_name or username and gitLink[4] is the repo_name.
     $http.get('https://api.github.com/repos/'+gitLink[3]+"/"+gitLink[4]).success(function(data){
@@ -30,8 +31,9 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       $scope.open_issues=total_open_issues;
     }).error(function(err){
       console.log(err);
+      //display repo incorrect if "message"="Not Found" error thrown by GitHub api call.
       if(err.message="Not Found"){
-        $scope.error = "The repository is not present! https://github.com/{org_name or username}/{repo_name}"
+        $scope.error = "The repository is not present! Please check repository : format <https://github.com/{org_name or username}/{repo_name}>"
       }
       else{
         $scope.error = "Something went wrong. Please try again later!"
@@ -54,8 +56,9 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       $scope.lastoneday=lastoneday;
     }).error(function(err){
       console.log(err);
+      //display repo incorrect if "message"="Not Found" error thrown by GitHub api call.
       if(err.message="Not Found"){
-        $scope.error = "The repository is not present! https://github.com/{org_name or username}/{repo_name}"
+        $scope.error = "The repository is not present! Please check repository.Format : <https://github.com/{org_name or username}/{repo_name}>"
       }
       else{
         $scope.error = "Something went wrong. Please try again later!"
@@ -68,13 +71,14 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
       total_open_issues_lastoneweek=output;
       lastoneweek =total_open_issues_lastoneweek.length;
       //subtracting number of issues which were created in last 24 hours.
-      lastoneweek = lastoneweek - lastoneday;
-      $scope.lastoneweek=lastoneweek;
+      last7daysminuslast1day = lastoneweek - lastoneday;
+      $scope.last7daysminuslast1day=last7daysminuslast1day;
       $scope.loaded=true;
     }).error(function(err){
       console.log(err);
+      //display repo incorrect if "message"="Not Found" error thrown by GitHub api call.
       if(err.message="Not Found"){
-        $scope.error = "The repository is not present! Please provide repo url in format https://github.com/{org_name or username}/{repo_name} "
+        $scope.error = "The repository is not present! Please provide repo url in format <https://github.com/{org_name or username}/{repo_name}>"
       }
       else{
         $scope.error = "Something went wrong. Please try again later!"
@@ -82,6 +86,7 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
     })
   }
   else{
+    //error message if the validation of url as github url was unsuccessful.
     $scope.error="please enter the url in the format https://github.com/{org_name or username}/{repo_name}";
   }
 }
