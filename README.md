@@ -29,7 +29,6 @@ https://github-issues-count.herokuapp.com/
 
 Future scope of improvement:
 ------------------------------------------
-1. user experience in order to make it seamless.
-2. client side validation.
-3. send authenticated request to github in order to increase rate limit.
-4. set timeout if the request is taking a long time to retrieve data.
+1. set timeout if the request is taking a long time to retrieve data.
+2. send authenticated request to github in order to increase rate limit.
+3. Robost client side validation to make application seamless
