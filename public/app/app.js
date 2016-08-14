@@ -11,6 +11,7 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
   $scope.lastoneday = null;
   $scope.lastoneweek = null;
   $scope.last7daysminuslast1day = null;
+  $scope.morethan7days = null;
   $scope.error = null;
   $scope.loaded = true;
 
@@ -69,7 +70,10 @@ app.controller("fetchIssuesController", ['$scope', '$http', function ($scope, $h
     //using GITHUP API : getting issues for the given link which was created in last 7 days
     $http.get('https://api.github.com/repos/'+gitLink[3]+"/"+gitLink[4]+'/issues?since='+w).success(function(output){
       total_open_issues_lastoneweek=output;
+      //number of opened issues in last one week
       lastoneweek =total_open_issues_lastoneweek.length;
+      //subtract last one week issues from total issues to get issues opened more than 7 days ago.
+      $scope.morethan7days= total_open_issues-lastoneweek;
       //subtracting number of issues which were created in last 24 hours.
       last7daysminuslast1day = lastoneweek - lastoneday;
       $scope.last7daysminuslast1day=last7daysminuslast1day;
