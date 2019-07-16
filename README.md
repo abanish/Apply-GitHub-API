@@ -1,13 +1,13 @@
 ---------------------------------------
-Github open issues count version 1.0
+# Github open issues count version 1.0
 ---------------------------------------
 Cound Number of issues for a github repo created with the help of Single Page Angular/Node/Express app leveraging GITHUB APIs.
 
-Heroku Link where app is live
+# Heroku Link where app is live
 ------------------------------------------
 https://github-issues-count.herokuapp.com/
 
-App Description:
+# App Description:
 ---------------------------------------
 The app contains a input field for user to enter github link for a repo.
 
@@ -31,7 +31,7 @@ Number of open issues that were opened more than 24 hours ago but less than 7 da
 
 Number of open issues that were opened more than 7 days ago = total open issues count - last 7 days count.
 
-Future scope of improvement:
+# Future scope of improvement:
 ------------------------------------------
 1. set timeout if the request is taking a long time to retrieve data.
 2. send authenticated request to github in order to increase rate limit.
