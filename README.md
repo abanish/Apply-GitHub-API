@@ -29,7 +29,7 @@ Number of open issues that were opened more than 24 hours ago but less than 7 da
 
 Number of open issues that were opened more than 7 days ago = total open issues count - last 7 days count.
 
-# Examples
+# App Snippets
 
 ## Input Box
 
